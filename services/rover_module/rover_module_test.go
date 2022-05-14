@@ -8,7 +8,7 @@ import (
 )
 
 func TestInitialDP(t *testing.T) {
-	c := entities.CurrentDP{Direction: "N", Position_X: 0, Position_Y: 0}
+	c := entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 0}
 
 	assert.Equal(t, c, InitialDP())
 }
@@ -23,40 +23,57 @@ func TestRotate(t *testing.T) {
 	t.Run("Turning right checking", func(t *testing.T) {
 		when = R
 
+		// N
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "W", Position_X: 0, Position_Y: 0}
+		// E
+		expected = entities.CurrentDP{Degree: 0, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
+		// E
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "S", Position_X: 0, Position_Y: 0}
+		// S
+		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
+		// S
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "E", Position_X: 0, Position_Y: 0}
+		// W
+		expected = entities.CurrentDP{Degree: 180, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
+		// W
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "N", Position_X: 0, Position_Y: 0}
+		// N
+		expected = entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 	})
 
 	t.Run("Turning right checking", func(t *testing.T) {
+		current = InitialDP()
 		when = L
 
+		// N
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "E", Position_X: 0, Position_Y: 0}
+		// W
+		expected = entities.CurrentDP{Degree: 180, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
+		// W
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "S", Position_X: 0, Position_Y: 0}
+		// S
+		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
+		// S
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "W", Position_X: 0, Position_Y: 0}
+		// E
+		expected = entities.CurrentDP{Degree: 0, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
+		// E
 		current = Rotate(current, when)
-		expected = entities.CurrentDP{Direction: "N", Position_X: 0, Position_Y: 0}
+		// N
+		expected = entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 	})
 }
@@ -72,32 +89,32 @@ func TestMove(t *testing.T) {
 	t.Run("Move to positive area", func(t *testing.T) {
 		// Move to quadrant Y
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "N", Position_X: 0, Position_Y: 1}
+		expected = entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "N", Position_X: 0, Position_Y: 2}
+		expected = entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 2}
 		assert.Equal(t, expected, current)
 
-		current.Direction = "S"
+		current.Degree = 270
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "S", Position_X: 0, Position_Y: 1}
+		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
 		// Move to quadrant Y
-		current.Direction = "W"
+		current.Degree = 0
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "W", Position_X: 1, Position_Y: 1}
+		expected = entities.CurrentDP{Degree: 0, Position_X: 1, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
-		current.Direction = "W"
+		current.Degree = 180
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "W", Position_X: 2, Position_Y: 1}
+		expected = entities.CurrentDP{Degree: 0, Position_X: 2, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
-		current.Direction = "E"
+		current.Degree = 180
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "E", Position_X: 1, Position_Y: 1}
+		expected = entities.CurrentDP{Degree: 180, Position_X: 1, Position_Y: 1}
 		assert.Equal(t, expected, current)
 	})
 
@@ -105,15 +122,15 @@ func TestMove(t *testing.T) {
 		// Move to quadrant Y
 		current = InitialDP()
 
-		current.Direction = "S"
+		current.Degree = 270
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "S", Position_X: 0, Position_Y: 0}
+		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
 		// Move to quadrant X
-		current.Direction = "E"
+		current.Degree = 180
 		current = Move(current, when, unit)
-		expected = entities.CurrentDP{Direction: "E", Position_X: 0, Position_Y: 0}
+		expected = entities.CurrentDP{Degree: 180, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 	})
 }
