@@ -101,13 +101,13 @@ func TestMove(t *testing.T) {
 		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
-		// Move to quadrant Y
+		// Move to quadrant X
 		current.Degree = 0
 		current = Move(current, when, unit)
 		expected = entities.CurrentDP{Degree: 0, Position_X: 1, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
-		current.Degree = 180
+		current.Degree = 0
 		current = Move(current, when, unit)
 		expected = entities.CurrentDP{Degree: 0, Position_X: 2, Position_Y: 1}
 		assert.Equal(t, expected, current)

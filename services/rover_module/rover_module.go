@@ -4,10 +4,12 @@ import (
 	"github.com/tanakornwry/mars-exploration-project/entities"
 )
 
-type RoverService interface {
+type RoverModules interface {
 	InitialDP() entities.CommandConf
-	Rotate(entities.CommandConf) entities.CurrentDP
-	Move(entities.CommandConf) entities.CurrentDP
+	Rotate(entities.CommandConf, string) entities.CurrentDP
+	Move(entities.CommandConf, string, int) entities.CurrentDP
+	forwardMoving(entities.CurrentDP)
+	backwardMoving(entities.CurrentDP)
 }
 
 func InitialDP() entities.CurrentDP {
@@ -40,5 +42,22 @@ func Rotate(c entities.CurrentDP, d string) entities.CurrentDP {
 }
 
 func Move(c entities.CurrentDP, m string, u int) entities.CurrentDP {
-	return entities.CurrentDP{}
+
+	// Calculate block unit when backward moving
+	if m == "B" {
+		u *= -1
+	}
+
+	switch {
+	case c.Degree == 0: // Move to E direction on X axis
+		c.Position_X += u
+	case c.Degree == 180: // Move to W direction on X axis
+		c.Position_X -= u
+	case c.Degree == 90: // Move to N direction on Y axis
+		c.Position_Y += u
+	case c.Degree == 270: // Move to S direction on Y axis
+		c.Position_Y -= u
+	}
+
+	return c
 }
