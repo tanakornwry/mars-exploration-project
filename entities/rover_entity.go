@@ -8,7 +8,7 @@ type CurrentDP struct {
 
 type CommandConf struct {
 	SizeMap int
-	Command [][2]int // 1 is command, 2 is block
+	Command []map[string]int // 1 is command, 2 is block
 }
 
 type InstructionStruct struct {

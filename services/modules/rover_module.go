@@ -1,19 +1,26 @@
-package rovermodule
+package rovermodules
 
 import (
 	"github.com/tanakornwry/mars-exploration-project/entities"
 )
 
+type roverModules struct {
+}
+
 type RoverModules interface {
-	InitialDP() entities.CommandConf
-	Rotate(entities.CommandConf, string) entities.CurrentDP
-	Move(entities.CommandConf, string, int) entities.CurrentDP
+	InitialDP() entities.CurrentDP
+	Rotate(c entities.CurrentDP, d string) entities.CurrentDP
+	Move(c entities.CurrentDP, m string, u int) entities.CurrentDP
+}
+
+func NewRoverModules() RoverModules {
+	return &roverModules{}
 }
 
 // Hardcode here first to can be testable and waiting for implement the interactor
 var Scope = 10
 
-func InitialDP() entities.CurrentDP {
+func (r *roverModules) InitialDP() entities.CurrentDP {
 	initDP := entities.CurrentDP{
 		Degree:     90,
 		Position_X: 0,
@@ -22,7 +29,7 @@ func InitialDP() entities.CurrentDP {
 	return initDP
 }
 
-func Rotate(c entities.CurrentDP, d string) entities.CurrentDP {
+func (r *roverModules) Rotate(c entities.CurrentDP, d string) entities.CurrentDP {
 
 	// Set to revert the circle
 	if d == "R" && c.Degree == 0 {
@@ -42,7 +49,7 @@ func Rotate(c entities.CurrentDP, d string) entities.CurrentDP {
 	return c
 }
 
-func Move(c entities.CurrentDP, m string, u int) entities.CurrentDP {
+func (r *roverModules) Move(c entities.CurrentDP, m string, u int) entities.CurrentDP {
 
 	// Calculate block unit when backward moving
 	if m == "B" {

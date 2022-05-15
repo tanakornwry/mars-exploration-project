@@ -1,4 +1,4 @@
-package rovermodule
+package rovermodules
 
 import "github.com/tanakornwry/mars-exploration-project/entities"
 
