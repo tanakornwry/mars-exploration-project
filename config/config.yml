@@ -1,0 +1,4 @@
+command_file:
+  path: ../ftp/command/
+  name: command.txt
+  
