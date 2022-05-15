@@ -6,11 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/tanakornwry/mars-exploration-project/entities"
 	rovermodules "github.com/tanakornwry/mars-exploration-project/services/modules"
+	roverpresenters "github.com/tanakornwry/mars-exploration-project/services/presenters"
 )
 
 func TestStartRover(t *testing.T) {
 	roverModules := rovermodules.NewRoverModules()
-	roverInteractors := NewRoverInteractors(roverModules)
+	roverPresenters := roverpresenters.NewRoverPresenters()
+	roverInteractors := NewRoverInteractors(roverModules, roverPresenters)
 
 	// Mock Data and Result base on sample Input/Output
 	var c entities.CommandConf

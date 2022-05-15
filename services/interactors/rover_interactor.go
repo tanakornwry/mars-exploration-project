@@ -3,18 +3,20 @@ package interactors
 import (
 	"github.com/tanakornwry/mars-exploration-project/entities"
 	rovermodules "github.com/tanakornwry/mars-exploration-project/services/modules"
+	roverpresenters "github.com/tanakornwry/mars-exploration-project/services/presenters"
 )
 
 type roverInteractors struct {
-	RoverModules rovermodules.RoverModules
+	RoverModules    rovermodules.RoverModules
+	RoverPresenters roverpresenters.RoverPresenters
 }
 
 type RoverInteractors interface {
 	StartRover(c entities.CommandConf) []entities.CurrentDP
 }
 
-func NewRoverInteractors(m rovermodules.RoverModules) RoverInteractors {
-	return &roverInteractors{m}
+func NewRoverInteractors(m rovermodules.RoverModules, p roverpresenters.RoverPresenters) RoverInteractors {
+	return &roverInteractors{m, p}
 }
 
 func (ui *roverInteractors) StartRover(c entities.CommandConf) []entities.CurrentDP {
@@ -62,5 +64,5 @@ func (ui *roverInteractors) StartRover(c entities.CommandConf) []entities.Curren
 		}
 	}
 
-	return roverPath
+	return ui.RoverPresenters.RoverResponse(roverPath)
 }
