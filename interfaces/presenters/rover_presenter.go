@@ -30,9 +30,13 @@ func (ip *interfacePresenters) Response(rr []entities.CurrentDP) []string {
 func convertDegree(dg int) string {
 	mapDirection := map[int]string{
 		0:   "E",
+		45:  "NE",
 		90:  "N",
+		135: "NW",
 		180: "W",
+		225: "SW",
 		270: "S",
+		315: "SE",
 	}
 
 	return mapDirection[dg]

@@ -1,2 +1,3 @@
 24
-R F L F L L F R
+R F L F L L F R 
+HR HL B F2 B3 F10 HL1

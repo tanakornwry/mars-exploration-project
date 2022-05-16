@@ -72,7 +72,8 @@ func fileExists(path string) bool {
 func refactorCommand(rawCommand []string) entities.CommandConf {
 	var cc entities.CommandConf
 	for i, v := range rawCommand {
-		if i == 0 {
+		v = strings.Trim(v, " ")
+		if i == 0 { // The first line is always size map
 			asInt, err := strconv.Atoi(v)
 			if err != nil {
 				log.Fatal("Can not defind the size map because:", err)
@@ -80,19 +81,9 @@ func refactorCommand(rawCommand []string) entities.CommandConf {
 			cc.SizeMap = asInt
 		} else {
 			for _, c := range strings.Split(v, " ") {
-				subComm := strings.Split(c, "")
-				if len(subComm) > 1 {
-					asInt, _ := strconv.Atoi(subComm[1])
-					if asInt >= 1 {
-						if validateCommand(subComm[0]) {
-							cc.Command = append(cc.Command, map[string]int{subComm[0]: asInt})
-						}
-					}
-
-				} else {
-					if validateCommand(subComm[0]) {
-						cc.Command = append(cc.Command, map[string]int{subComm[0]: 1})
-					}
+				newCC := analyzeInstruction(c)
+				if len(newCC.Command) > 0 {
+					cc.Command = append(cc.Command, newCC.Command...)
 				}
 			}
 		}
@@ -101,9 +92,68 @@ func refactorCommand(rawCommand []string) entities.CommandConf {
 	return cc
 }
 
-func validateCommand(c string) bool {
-	if c == "L" || c == "R" || c == "F" || c == "B" {
-		return true
+func analyzeInstruction(command string) entities.CommandConf {
+	var cc entities.CommandConf
+
+	cSet := []rune(command)
+	if len(cSet) > 1 {
+		var inst string
+		var unit string
+		if cSet[0] >= 65 && cSet[0] <= 90 {
+			// First charecter
+			inst = inst + string(cSet[0])
+
+			// Second charecter
+			if cSet[1] >= 65 && cSet[1] <= 90 {
+				inst = inst + string(cSet[1])
+			} else {
+				unit = unit + string(cSet[1])
+			}
+
+			if validInstruction(inst) {
+
+				// The rest charecter
+				for i := 2; i < len(cSet); i++ {
+					unit = unit + string(cSet[i])
+				}
+
+				if unit == "" {
+					cc.Command = append(cc.Command, map[string]int{inst: 1})
+				} else {
+					unit, err := strconv.Atoi(unit)
+					if err == nil && unit >= 1 && (inst == "F" || inst == "B") {
+						for i := 0; i < unit; i++ {
+							cc.Command = append(cc.Command, map[string]int{inst: 1})
+						}
+					} else {
+						log.Println("Checkpoint 3 - Found incorrect instruction:", command)
+					}
+				}
+
+			} else {
+				log.Println("Checkpoint 2 - Found incorrect instruction:", command)
+			}
+
+		} else {
+			log.Println("Checkpoint 1 - Found incorrect instruction:", command)
+		}
+
+	} else {
+		if validInstruction(string(cSet[0])) {
+			cc.Command = append(cc.Command, map[string]int{string(cSet[0]): 1})
+		} else {
+			log.Println("Found incorrect instruction:", command)
+		}
+	}
+
+	return cc
+}
+
+func validInstruction(str string) bool {
+	for _, v := range entities.Instruction.AllowInstruction {
+		if v == str {
+			return true
+		}
 	}
 
 	return false

@@ -13,11 +13,22 @@ type CommandConf struct {
 
 type InstructionStruct struct {
 	RotateInstruction map[string]int
+	AllowInstruction  []string
 }
 
 var Instruction = InstructionStruct{
 	RotateInstruction: map[string]int{
-		"R": -90,
-		"L": 90,
+		"R":  -90,
+		"HR": -45,
+		"L":  90,
+		"HL": 45,
+	},
+	AllowInstruction: []string{
+		"F",
+		"B",
+		"L",
+		"HL",
+		"R",
+		"HR",
 	},
 }

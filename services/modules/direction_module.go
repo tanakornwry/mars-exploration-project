@@ -1,6 +1,8 @@
 package rovermodules
 
-import "github.com/tanakornwry/mars-exploration-project/entities"
+import (
+	"github.com/tanakornwry/mars-exploration-project/entities"
+)
 
 func ValidRoute(c entities.CurrentDP, m string, u int) (bool, entities.CurrentDP) {
 
@@ -17,6 +19,22 @@ func ValidRoute(c entities.CurrentDP, m string, u int) (bool, entities.CurrentDP
 	case c.Degree == 90: // Move to N direction on Y axis
 		c.Position_Y += u
 	case c.Degree == 270: // Move to S direction on Y axis
+		c.Position_Y -= u
+	}
+
+	// Extended skill to the Rover that it can half rotate
+	switch {
+	case c.Degree == 45: // NE
+		c.Position_X += u
+		c.Position_Y += u
+	case c.Degree == 135: // NW
+		c.Position_X -= u
+		c.Position_Y += u
+	case c.Degree == 225: // SW
+		c.Position_X -= u
+		c.Position_Y -= u
+	case c.Degree == 315: // SE
+		c.Position_X += u
 		c.Position_Y -= u
 	}
 

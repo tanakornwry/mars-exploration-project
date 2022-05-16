@@ -37,10 +37,10 @@ func (ui *roverInteractors) StartRover(c entities.CommandConf) []entities.Curren
 
 			// Call the rover module to execute command
 			switch {
-			case act == "L" || act == "R":
+			case act == "L" || act == "HL" || act == "R" || act == "HR":
 				rAct = roverModules.Rotate(currentDP, act)
-			case act == "F":
-				rAct = roverModules.Move(currentDP, act, unit)
+			case act == "F" || act == "B":
+				rAct = roverModules.Move(c.SizeMap, currentDP, act, unit)
 			}
 
 			// Set the new rover direction and position

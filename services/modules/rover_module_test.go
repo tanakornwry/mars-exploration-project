@@ -82,10 +82,45 @@ func TestRotate(t *testing.T) {
 	})
 }
 
+func TestHalfRotate(t *testing.T) {
+	var roverModules = NewRoverModules()
+
+	current := roverModules.InitialDP()
+	var expected entities.CurrentDP
+
+	// Half right
+	current = roverModules.Rotate(current, "HR")
+	expected = entities.CurrentDP{Degree: 45, Position_X: 0, Position_Y: 0}
+	assert.Equal(t, expected, current)
+
+	// Half right and convert full circle
+	current = roverModules.Rotate(current, "R")
+	expected = entities.CurrentDP{Degree: 315, Position_X: 0, Position_Y: 0}
+	assert.Equal(t, expected, current)
+
+	current = roverModules.InitialDP()
+	// Half Left
+	current = roverModules.Rotate(current, "HL")
+	expected = entities.CurrentDP{Degree: 135, Position_X: 0, Position_Y: 0}
+	assert.Equal(t, expected, current)
+
+	// Half right and convert full circle
+	current.Degree = 270
+	current = roverModules.Rotate(current, "L")
+	expected = entities.CurrentDP{Degree: 0, Position_X: 0, Position_Y: 0}
+	assert.Equal(t, expected, current)
+
+	current.Degree = 315
+	current = roverModules.Rotate(current, "L")
+	expected = entities.CurrentDP{Degree: 45, Position_X: 0, Position_Y: 0}
+	assert.Equal(t, expected, current)
+}
+
 func TestMove(t *testing.T) {
 	var roverModules = NewRoverModules()
 
 	current := roverModules.InitialDP()
+	scope := 10
 	F := "F"
 
 	var when = F
@@ -94,32 +129,32 @@ func TestMove(t *testing.T) {
 
 	t.Run("Move to positive area", func(t *testing.T) {
 		// Move to quadrant Y
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 90, Position_X: 0, Position_Y: 2}
 		assert.Equal(t, expected, current)
 
 		current.Degree = 270
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
 		// Move to quadrant X
 		current.Degree = 0
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 0, Position_X: 1, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
 		current.Degree = 0
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 0, Position_X: 2, Position_Y: 1}
 		assert.Equal(t, expected, current)
 
 		current.Degree = 180
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 180, Position_X: 1, Position_Y: 1}
 		assert.Equal(t, expected, current)
 	})
@@ -129,14 +164,34 @@ func TestMove(t *testing.T) {
 		current = roverModules.InitialDP()
 
 		current.Degree = 270
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 270, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 
 		// Move to quadrant X
 		current.Degree = 180
-		current = roverModules.Move(current, when, unit)
+		current = roverModules.Move(scope, current, when, unit)
 		expected = entities.CurrentDP{Degree: 180, Position_X: 0, Position_Y: 0}
 		assert.Equal(t, expected, current)
 	})
+}
+
+func TestBackwardMoving(t *testing.T) {
+	var roverModules = NewRoverModules()
+
+	current := roverModules.InitialDP()
+	scope := 10
+	F := "F"
+	B := "B"
+
+	var when = F
+	var unit = 1
+	current.Degree = 90
+	current.Position_X = 1
+	current.Position_Y = 1
+
+	when = B
+	current = roverModules.Move(scope, current, when, unit)
+	expected := entities.CurrentDP{Degree: 90, Position_X: 1, Position_Y: 0}
+	assert.Equal(t, expected, current)
 }

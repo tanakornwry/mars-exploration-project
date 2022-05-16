@@ -43,3 +43,43 @@ func TestStartRover(t *testing.T) {
 
 	assert.Equal(t, want, have)
 }
+
+func TestStartRoverSetII(t *testing.T) {
+	roverModules := rovermodules.NewRoverModules()
+	roverPresenters := roverpresenters.NewRoverPresenters()
+	roverInteractors := NewRoverInteractors(roverModules, roverPresenters)
+
+	var c entities.CommandConf
+	c.SizeMap = 20
+	c.Command = []map[string]int{
+		{"R": 1},
+		{"F": 1},
+		{"HL": 1},
+		{"HL": 1},
+		{"B": 1},
+		{"HR": 1},
+		{"F": 1},
+		{"B": 1},
+		{"HR": 1},
+		{"HR": 1},
+		{"B": 1},
+	}
+
+	have := roverInteractors.StartRover(c)
+	want := []entities.CurrentDP{
+		{Degree: 90, Position_X: 0, Position_Y: 0},
+		{Degree: 0, Position_X: 0, Position_Y: 0},
+		{Degree: 0, Position_X: 1, Position_Y: 0},
+		{Degree: 45, Position_X: 1, Position_Y: 0},
+		{Degree: 90, Position_X: 1, Position_Y: 0},
+		{Degree: 90, Position_X: 1, Position_Y: 0},
+		{Degree: 45, Position_X: 1, Position_Y: 0},
+		{Degree: 45, Position_X: 2, Position_Y: 1},
+		{Degree: 45, Position_X: 1, Position_Y: 0},
+		{Degree: 0, Position_X: 1, Position_Y: 0},
+		{Degree: 315, Position_X: 1, Position_Y: 0},
+		{Degree: 315, Position_X: 0, Position_Y: 1},
+	}
+
+	assert.Equal(t, want, have)
+}

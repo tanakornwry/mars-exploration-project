@@ -1,0 +1,6 @@
+12
+R F5 B HR F
+HR B2 L L HL
+F HL F4 R F5
+B3 R HR F F 
+HL L F
