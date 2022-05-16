@@ -12,7 +12,10 @@ A rover instructure
 - R  ...for turning right
 - HR  ...for turning right
 
-A rover rules
+*** You can add a positive integer to the tail of the move instruction for moving more than one block. For example, F3 or B2. The rover will always report the current direction and position at every step. ***
+
+
+**A rover rules**
 1. A rover always start in position 0,0 with facing north
 2. A rover can not be in negative position and also can not go out of map
 3. A rover will maintain the direction and position when reaching the edge
@@ -21,7 +24,7 @@ A rover rules
     - First line: will always be a size of a maps resporesent in interger only
     - Next lines: will be an instruction to move or rotate (can have more than one line)
 
-example a command file
+**example a command file**
 ```
 12
 R F5 B HR F
@@ -30,7 +33,7 @@ F HL F4 R F5
 B3 R HR F F 
 ```
 
-Sample input/output
+**Sample input/output**
 
 INPUT
 ```
@@ -78,7 +81,7 @@ In this project, I used **Golang** to develop and design based on **Clean-Archit
 |Layer|Directory|
 |--------------------------------|------------------------------------------------------------|
 |Layer 1 Entities|- [entities] To store the rover data structure and instruction|
-|Layer 2 User case|- [services] To makes the rover move or rotate follow by the command incoming|
+|Layer 2 Use cases|- [services] To makes the rover move or rotate follow by the command incoming|
 |Layer 3 Interface Adapters|- [interfaces] to convert the rover data to fit with the specification data format and respond to a user interface. For example, The rover will use the degree format( 0 45 90 135 180 225 270 315 ) but the specification wants direction format( E NE N NW W SW S SE)|
 |Later 4 Frameworks & Driver|- [infrastructure] to setup router and reads the command file|
 
@@ -93,13 +96,13 @@ $ go run main.go
 ```
 or install the project and run with installed version (For more detail: https://go.dev/doc/code)
 
-3. After the project runs you can start by this URL (GET) localhost:8080/mars for greeting Mars and (GET) localhost:8080/mars/explore for exploration
+3. After the project runs you can start by this URL (GET) _localhost:8080/mars_ for greeting Mars and (GET) _localhost:8080/mars/explore_ for exploration
 4. So you will see explored path
 
-I have set port 8080 as a default, If want want to run with other ports, you can modify the config at /config/config.json
+I have set port 8080 as a default, If want want to run with other ports, you can modify the config at _/config/config.json_
 ```
 "port": "8080"
 ```
 
 ### How to make your exploration path?
-If you would like to explore by your command, you could write your command followed by the rover instruction (descript above). And replace it at /ftp/command.txt
+If you would like to explore by your command, you could write your command followed by the rover instruction (descript above). And replace it at _/ftp/command.txt_
