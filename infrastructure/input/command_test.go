@@ -2,10 +2,17 @@ package input
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReadCommand(t *testing.T) {
-	command := NewInput().ReadCommand()
+	command, err := NewInput().ReadCommand()
+
+	if err != "" {
+		want := "Error: Not found the command file."
+		assert.Equal(t, want, err)
+	}
 
 	if command.SizeMap < 1 {
 		t.Error("Size map can not be zero or negative number")

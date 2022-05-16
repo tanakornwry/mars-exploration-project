@@ -21,19 +21,6 @@ func NewRoverInteractors(m rovermodules.RoverModules, p roverpresenters.RoverPre
 
 func (ui *roverInteractors) StartRover(c entities.CommandConf) []entities.CurrentDP {
 
-	// Mock command
-	c.SizeMap = 20
-	c.Command = []map[string]int{
-		{"R": 1},
-		{"F": 1},
-		{"L": 1},
-		{"F": 1},
-		{"L": 1},
-		{"L": 1},
-		{"F": 1},
-		{"R": 1},
-	}
-
 	var roverModules = rovermodules.NewRoverModules()
 
 	// Set the rover to start direction and position (90(N):0,0)

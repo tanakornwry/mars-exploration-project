@@ -1,0 +1,7 @@
+{
+  "command_file":{
+    "path": "ftp/",
+    "filename": "command.txt"
+  },
+  "port": "8080"
+}

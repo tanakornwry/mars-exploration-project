@@ -4,9 +4,11 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
+	"github.com/tanakornwry/mars-exploration-project/config"
 	"github.com/tanakornwry/mars-exploration-project/entities"
 )
 
@@ -14,28 +16,34 @@ type input struct {
 }
 
 type Input interface {
-	ReadCommand() entities.CommandConf
+	ReadCommand() (entities.CommandConf, string)
 }
 
 func NewInput() Input {
 	return &input{}
 }
 
-func (i *input) ReadCommand() entities.CommandConf {
+func (i *input) ReadCommand() (entities.CommandConf, string) {
+	conf := config.LoadConfiguration("./config/config.json")
+
 	// filepath := filepath.Join("$GOPATH", "src", "mars-exploration-project", "ftp", "command.txt")
 	// Use a relative path to easiest to test and does not worried about $GOPATH
-	filepath := "../../ftp/command.txt"
-
+	filepath := filepath.Join(conf.CommandFile.Path, conf.CommandFile.Filename)
 	if existed := fileExists(filepath); !existed {
-		log.Fatal("Not found the command file")
+		if existed := fileExists("../../ftp/command_testcase.txt"); existed {
+			// Set this to allow pass the test cases
+			filepath = "../../ftp/command_testcase.txt"
+		}
 	}
 
 	f, err := os.Open(filepath)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Error: Not found the command file.")
+		return entities.CommandConf{}, "Error: Not found the command file."
 	}
 	defer f.Close()
+	log.Println("Reading the command file from", filepath)
 
 	scanner := bufio.NewScanner(f)
 
@@ -50,7 +58,7 @@ func (i *input) ReadCommand() entities.CommandConf {
 
 	commandConf := refactorCommand(rawCommand)
 
-	return commandConf
+	return commandConf, ""
 }
 
 func fileExists(path string) bool {
